@@ -12,9 +12,9 @@ public:
 	~ListWords();
 	void AddNewName(const std::string& name);
 	int ComputeList();
+	void ReadFromFile(const std::string& path);
 
 private:
-	void ReadFromFile(const std::string& path);
 	int ComputeWord(std::string word);
 };
 
