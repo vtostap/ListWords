@@ -1,17 +1,6 @@
 #include "Command.h"
 #include <iostream>
 
-
-
-Command::Command()
-{
-}
-
-
-Command::~Command()
-{
-}
-
 int CommandList::call() const
 {
 	switch (m_action)
@@ -23,9 +12,10 @@ int CommandList::call() const
 		m_list.AddNewName(m_param);
 		break;
 	case Action::print_list:
+		m_list.Print();
 		break;
 	case Action::compute_score:
-		std::cout << m_list.ComputeList();
+		std::cout << m_list.ComputeList() << std::endl;
 		break;
 	case Action::quit:
 		return -1;
@@ -37,7 +27,7 @@ int CommandList::call() const
 	return 1;
 }
 
-std::pair<std::string, std::string> CommandList::ParseCommand(const std::string str)
+std::pair<std::string, std::string> CommandList::ParseCommand(const std::string& str)
 {
 	std::pair<std::string, std::string> result;
 	
@@ -74,7 +64,7 @@ CommandList::Action CommandList::TraitsToAction(const std::string & str)
 	if (str == "quit")
 		return Action::quit;
 
-	std::cout << "Not implemented" <<std::endl;
+	std::cout << "Not implemented command." <<std::endl;
 	return Action::error;
 }
 

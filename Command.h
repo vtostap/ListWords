@@ -4,9 +4,6 @@
 class Command
 {
 public:
-	Command();
-	~Command();
-
 	virtual int call() const = 0;
 };
 
@@ -19,7 +16,7 @@ public:
 	CommandList(ListWords& list, const std::string& str);
 	int call() const override;
 private:
-	std::pair<std::string, std::string> ParseCommand(const std::string str);
+	std::pair<std::string, std::string> ParseCommand(const std::string& str);
 private:
 	Action TraitsToAction(const std::string& str);
 };
