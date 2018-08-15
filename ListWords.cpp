@@ -1,8 +1,9 @@
-#include "ListWords.h"
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <algorithm>
+
+#include "ListWords.h"
 
 ListWords::ListWords(const std::string& path)
 {
@@ -10,7 +11,6 @@ ListWords::ListWords(const std::string& path)
 		return;
 	else ReadFromFile(path);
 }
-
 
 ListWords::~ListWords()
 {
@@ -25,6 +25,7 @@ int ListWords::ComputeList()
 {
 	int result = 0;
 	int index = 1;
+	m_list.sort();
 	for (auto iter = m_list.begin(); iter != m_list.end(); ++index, ++iter)
 	{
 		result = index * ComputeWord(*iter);
@@ -34,18 +35,29 @@ int ListWords::ComputeList()
 
 void ListWords::ReadFromFile(const std::string & path)
 {
-	std::ifstream myfile(path);
+	std::ifstream file;
+	file.open(path);
 
-	if (myfile.is_open())
+	if (file.is_open())
 	{
 		std::string line;
-		while (std::getline(myfile, line))
+		while (std::getline(file, line))
 		{
 			m_list.push_back(line);
 		}
-		myfile.close();
+		file.close();
 	}
-	else std::cout << "Unable to open file";
+	else
+		std::cout << "Unable to open file" << std::endl;
+}
+
+void ListWords::Print()
+{
+	m_list.sort();
+	for (auto iter = m_list.begin(); iter != m_list.end(); ++iter)
+	{
+		std::cout << *iter << std::endl;
+	}
 }
 
 int ListWords::ComputeWord(std::string word)
