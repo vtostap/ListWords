@@ -16,18 +16,18 @@ int CommandList::call() const
 {
 	switch (m_action)
 	{
-	case read_file:
+	case Action::read_file:
 		m_list.ReadFromFile(m_param);
 		break;
-	case new_name:
+	case Action::new_name:
 		m_list.AddNewName(m_param);
 		break;
-	case print_list:
+	case Action::print_list:
 		break;
-	case compute_score:
+	case Action::compute_score:
 		std::cout << m_list.ComputeList();
 		break;
-	case quit:
+	case Action::quit:
 		return -1;
 		break;
 
@@ -40,14 +40,7 @@ int CommandList::call() const
 std::pair<std::string, std::string> CommandList::ParseCommand(const std::string str)
 {
 	std::pair<std::string, std::string> result;
-	size_t pos = str.find(':');
-	if (pos == std::string::npos)
-	{
-		std::cout << "Wrong command" << std::endl;
-		return result;
-	}
-	std::string command = str.substr(pos);
-
+	
 	bool first = false;
 	bool second = false;
 	for (auto iter = str.begin(); iter != str.end(); ++iter)
@@ -68,7 +61,27 @@ std::pair<std::string, std::string> CommandList::ParseCommand(const std::string 
 	return result;
 }
 
+CommandList::Action CommandList::TraitsToAction(const std::string & str)
+{
+	if (str == "read_file")
+		return Action::read_file;
+	if (str == "compute_score")
+		return Action::compute_score;
+	if (str == "new_name")
+		return Action::new_name;
+	if (str == "print_list")
+		return Action::print_list;
+	if (str == "quit")
+		return Action::quit;
+
+	std::cout << "Not implemented" <<std::endl;
+	return Action::error;
+}
+
 CommandList::CommandList(ListWords& list, const std::string& str)
 	:m_list(list)
 {
+	auto command = ParseCommand(str);
+	m_param = command.second;
+	m_action = TraitsToAction(command.first);
 }
